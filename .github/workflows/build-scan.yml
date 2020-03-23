@@ -23,7 +23,7 @@ jobs:
         ref: master
         path: master
     # Runs a set of commands using the runners shell
-    - name: Run a multi-line script
+    - name: Build and Push
       env:
         DOCKER_SECRET: ${{ secrets.DOCKER_SECRET }} 
       run: |
@@ -33,7 +33,35 @@ jobs:
         docker login -u kaizheh -p ${DOCKER_SECRET}
         docker build -t kaizheh/anchore-cli .
         docker push kaizheh/anchore-cli
+
+    - name: Scan
+      env:
+        ANCHORE_CLI_URL: ${{ secrets.DOCKER_SECRET }} 
+        ANCHORE_CLI_USER:  ${{ secrets.ANCHORE_CLI_USER }}
+        ANCHORE_CLI_PASS:  ${{ secrets.ANCHORE_CLI_PASS }}
+      run: |      
+        # install anchore-cli
+        apt-get update && apt-get install -y python-pip jq
+        pip install anchorecli
+        export PATH="$HOME/.local/bin/:$PATH"
         
+        # add image
+        anchore-cli image add $img
+
+        img="kaizheh/anchore-cli"
+        
+        # get sha value
+        sha=$(anchore-cli --json --api-version=0.2.4 image get $img | jq .[0].imageDigest -r)
+
+        echo $sha
+
+        # wait 30 senconds for analysis
+        sleep 30
+
+        # evaluate policy
+        status=$(anchore-cli --json evaluate check $sha --tag $img | jq --arg sha "$sha" --arg img "$img" '.[0][$sha][$img][0]["status"]' -r)
+
+        echo $status
         
     # Runs a set of commands using the runners shell
     - name: Post Scan
