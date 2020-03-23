@@ -28,6 +28,8 @@ jobs:
         cd master
         echo test, and deploy your project.
         ls -ltr
+        docker build -t kaizheh/anchore-cli .
+        docker push kaizheh/anchore-cli
         
         
     # Runs a set of commands using the runners shell
