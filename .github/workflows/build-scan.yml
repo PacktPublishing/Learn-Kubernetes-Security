@@ -41,14 +41,14 @@ jobs:
         ANCHORE_CLI_PASS:  ${{ secrets.ANCHORE_CLI_PASS }}
       run: |      
         # install anchore-cli
-        apt-get update && apt-get install -y python-pip jq
+        # apt-get update && apt-get install -y python-pip jq
         pip install anchorecli
         export PATH="$HOME/.local/bin/:$PATH"
         
+        img="kaizheh/anchore-cli"
+        
         # add image
         anchore-cli image add $img
-
-        img="kaizheh/anchore-cli"
         
         # get sha value
         sha=$(anchore-cli --json --api-version=0.2.4 image get $img | jq .[0].imageDigest -r)
