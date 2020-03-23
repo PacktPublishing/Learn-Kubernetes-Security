@@ -36,7 +36,7 @@ jobs:
 
     - name: Scan
       env:
-        ANCHORE_CLI_URL: ${{ secrets.DOCKER_SECRET }} 
+        ANCHORE_CLI_URL: ${{ secrets.ANCHORE_CLI_URL }} 
         ANCHORE_CLI_USER:  ${{ secrets.ANCHORE_CLI_USER }}
         ANCHORE_CLI_PASS:  ${{ secrets.ANCHORE_CLI_PASS }}
       run: |      
@@ -55,8 +55,8 @@ jobs:
 
         echo $sha
 
-        # wait 30 senconds for analysis
-        sleep 30
+        # wait for image analyzed
+        anchore-cli image wait $img
 
         # evaluate policy
         status=$(anchore-cli --json evaluate check $sha --tag $img | jq --arg sha "$sha" --arg img "$img" '.[0][$sha][$img][0]["status"]' -r)
