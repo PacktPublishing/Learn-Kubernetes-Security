@@ -25,9 +25,9 @@ jobs:
       env:
         DOCKER_SECRET: ${{ secrets.DOCKER_SECRET }} 
       run: |
-        cd master/chapter9
-        echo "Build Docker Image"
         ls -ltr
+        cd ./chapter9
+        echo "Build Docker Image"
         docker login -u kaizheh -p ${DOCKER_SECRET}
         docker build -t kaizheh/anchore-cli .
         docker push kaizheh/anchore-cli
