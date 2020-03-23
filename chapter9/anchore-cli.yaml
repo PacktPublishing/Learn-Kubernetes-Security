@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: anchore-cli
+  labels:
+    app: anchore
+spec:
+  containers:
+  - name: anchore-cli
+    image: kaizheh/anchore-cli
+    imagePullPolicy: Always
+    command: ['sh', '-c', 'sleep 3600']
+    env:
+      - name: ANCHORE_CLI_USER
+        value: "admin"
+      - name: ANCHORE_CLI_URL
+        value: "http://anchore-demo-anchore-engine-api.default.svc.cluster.local:8228/v1/"
+      - name: ANCHORE_CLI_PASS
+        value: "foobar"
+      - name: ANCHORE_CLI_SSL_VERIFY
+        value: "n"
