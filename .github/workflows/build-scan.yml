@@ -59,9 +59,7 @@ jobs:
         anchore-cli image wait $img
 
         # evaluate policy
-        status=$(anchore-cli --json evaluate check $sha --tag $img | jq --arg sha "$sha" --arg img "$img" '.[0][$sha][$img][0]["status"]' -r)
-
-        echo $status
+        anchore-cli --json evaluate check $sha --tag $img
         
     # Runs a set of commands using the runners shell
     - name: Post Scan
