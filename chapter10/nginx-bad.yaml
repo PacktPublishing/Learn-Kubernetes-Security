@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-bad
+spec:
+  containers:
+  - name: nginx-bad
+    image: nginx
+    resources:
+      limits:
+        memory: "800Mi"
+        cpu: "500m"

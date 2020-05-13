@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-good
+spec:
+  containers:
+  - name: nginx-good
+    image: nginx
+    resources:
+      limits:
+        memory: "65Mi"
+        cpu: "100m"
