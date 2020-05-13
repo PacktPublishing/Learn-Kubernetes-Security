@@ -1,0 +1,5 @@
+    - rule: Anomalous read in nginx pod
+      desc: Detect any anomalous file read activities in Nginx pod.
+      condition: (open_read and container and container.image.repository="kaizheh/insecure-nginx" and fd.directory != "/usr/share/nginx/html")
+      output: Anaomalous file read activity in Nginx pod (user=%user.name process=%proc.name file=%fd.name container_id=%container.id image=%container.image.repository)
+      priority: WARNING

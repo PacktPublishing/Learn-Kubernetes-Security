@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-1
+  namespace: ns1
+spec:
+  containers:
+  - name: echo
+    image: busybox
+    command: [ "sh", "-c", "echo 'this is echo' && sleep 1h" ]
+    env:
+    - name: SECRET
+      valueFrom:
+        secretKeyRef:
+          name: secret-1
+          key: secret
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-2
+  namespace: ns2
+data:
+  secret: '"xxx"'
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-3
+  namespace: ns3
+type: Opaque
+data:
+  secret: eXl5Cg==
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-1
+  namespace: ns1
+type: Opaque
+data:
+  secret: eXl5Cg==

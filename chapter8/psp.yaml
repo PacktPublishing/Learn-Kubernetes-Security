@@ -1,0 +1,46 @@
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  creationTimestamp: null
+  name: psp-restricted
+spec:
+  allowPrivilegeEscalation: false
+  fsGroup:
+    rule: RunAsAny
+  requiredDropCapabilities:
+  - SYS_CHROOT
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - secret
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  creationTimestamp: null
+  name: psp-privileged
+spec:
+  allowedCapabilities:
+  - SYS_ADMIN
+  defaultAddCapabilities:
+  - SYS_ADMIN
+  fsGroup:
+    rule: RunAsAny
+  hostIPC: true
+  hostNetwork: true
+  hostPID: true
+  privileged: true
+  requiredDropCapabilities:
+  - SYS_CHROOT
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  volumes:
+  - secret

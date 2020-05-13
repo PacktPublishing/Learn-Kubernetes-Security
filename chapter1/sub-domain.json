@@ -1,0 +1,27 @@
+{
+  "Comment": "Create a subdomain NS record in the parent domain",
+  "Changes": [
+    {
+      "Action": "CREATE",
+      "ResourceRecordSet": {
+        "Name": "k8s-clusters.k8s-demo.com",
+        "Type": "NS",
+        "TTL": 300,
+        "ResourceRecords": [
+          {
+            "Value": "ns-1.awsdns-1.co.uk"
+          },
+          {
+            "Value": "ns-2.awsdns-2.org"
+          },
+          {
+            "Value": "ns-3.awsdns-3.com"
+          },
+          {
+            "Value": "ns-4.awsdns-4.net"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-1
+  namespace: kube-system
+spec:
+  containers:
+  - name: echo
+    image: busybox
+    command: [ "sh", "-c", "echo 'this is echo' && sleep 1h" ]
