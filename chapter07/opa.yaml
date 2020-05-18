@@ -1,3 +1,4 @@
+# From here: https://www.openpolicyagent.org/docs/latest/kubernetes-tutorial/
 # Grant OPA/kube-mgmt read-only access to resources. This lets kube-mgmt
 # replicate resources into OPA so they can be used in policies.
 kind: ClusterRoleBinding
