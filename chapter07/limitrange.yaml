@@ -1,0 +1,10 @@
+apiVersion: "v1"
+kind: "LimitRange"
+metadata:
+  name: "pod-example" 
+spec:
+  limits:
+    - type: "Pod"
+      max:
+        memory: "128Mi"
+
