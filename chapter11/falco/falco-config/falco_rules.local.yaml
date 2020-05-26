@@ -24,6 +24,31 @@
   output: Anaomalous file read activity in Nginx pod (user=%user.name process=%proc.name file=%fd.name container_id=%container.id image=%container.image.repository)
   priority: WARNING
 
+- list: trusted_server_addresses
+  items: ['"127.0.0.1/8"']
+
+- list: trusted_server_ports
+  items: [80, 443]
+
+- macro: test_rule
+  condition: (container.image.repository startswith "kaizheh/")
+
+- rule: Detect Anomalous Outbound Connections 
+  desc: Detect anomalous outbound connections
+  condition: (evt.type in (sendto, sendmsg) and container and evt.dir=< and (fd.net != "127.0.0.0/8" and not fd.snet in (trusted_server_addresses) and not fd.sport in (trusted_server_ports)) and test_rule) 
+  output: Outbound connection to anomalous IP/Port(command=%proc.cmdline port=%fd.rport ip=%fd.rip container=%container.info image=%container.image.repository)
+  priority: CRITICAL
+
+- list: trusted_nginx_processes
+  items: ["nginx"]
+
+- rule: Detect Anomalous Process Launched in Nginx Container
+  desc: Anomalous process launched inside container.
+  condition: spawned_process and container and not proc.name in (trusted_nginx_processes) and test_rule
+  output: Anomalous process running in Nginx container (command=%proc.cmdline container=%container.info image=%container.image.repository)
+  priority: CRITICAL
+  tags: [process]
+
 # Add new rules, like this one
 # - rule: The program "sudo" is run in a container
 #   desc: An event will trigger every time you run sudo in a container

@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: insecure-nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insecure-nginx
+  namespace: insecure-nginx
+spec:
+  selector:
+    app: insecure-nginx 
+  ports:
+  - name: misconfig
+    port: 80
+    targetPort: 8081
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insecure-nginx
+  labels:
+    app: insecure-nginx
+  namespace: insecure-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insecure-nginx
+  template:
+    metadata:
+      labels:
+        app: insecure-nginx 
+    spec:
+      containers:
+      - image: kaizheh/victim:nginx
+        imagePullPolicy: Always
+        name: insecure-nginx
+        ports:
+          - name: insecure
+            containerPort: 8081
