@@ -35,7 +35,7 @@
 
 - rule: Detect Anomalous Outbound Connections 
   desc: Detect anomalous outbound connections
-  condition: (evt.type in (sendto, sendmsg) and container and evt.dir=< and (fd.net != "127.0.0.0/8" and not fd.snet in (trusted_server_addresses) and not fd.sport in (trusted_server_ports)) and test_rule) 
+  condition: (evt.type in (sendto, sendmsg) and container and evt.dir=< and (fd.net != "127.0.0.0/8" and not fd.snet in (trusted_server_addresses) or not fd.sport in (trusted_server_ports)) and test_rule) 
   output: Outbound connection to anomalous IP/Port(command=%proc.cmdline port=%fd.rport ip=%fd.rip container=%container.info image=%container.image.repository)
   priority: CRITICAL
 
