@@ -16,7 +16,7 @@ export BASE64_CRT=`cat ca.crt | base64 | tr -d '\n'`
 kubectl label ns kube-system openpolicyagent.org/webhook=ignore
 kubectl label ns opa openpolicyagent.org/webhook=ignore
 cat webhook-config.yaml | envsubst | kubectl apply -f -
-kubectl create configmap pod --from-file=pod-blacklist.rego
+kubectl create configmap pod --from-file=pod-whitelist.rego
 kubectl logs -l app=opa -c opa
 kubectl create namespace test
 kubectl apply -f busybox.yaml -n test
